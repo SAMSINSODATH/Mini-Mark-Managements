@@ -31,7 +31,7 @@ loginForm.addEventListener("submit", function (event) {
 
         // Go to home page
         setTimeout(function () {
-            window.location.href = "index.html";
+            window.location.href = "../dashboard/index.html";
         }, 1000);
 
     } else {
