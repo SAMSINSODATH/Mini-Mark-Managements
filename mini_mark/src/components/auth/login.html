@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Mart - Login</title>
+</head>
+
+<body style="
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+">
+
+    <div style="
+        width: 350px;
+        margin: 100px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    ">
+
+        <h2 style="
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        ">
+            Mini Mart Login
+        </h2>
+
+        <form id="loginForm">
+
+            <label style="
+                display: block;
+                margin-bottom: 8px;
+                color: #333;
+            ">
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                style="
+                    width: 100%;
+                    padding: 12px;
+                    margin-bottom: 15px;
+                    box-sizing: border-box;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                "
+            >
+
+            <label style="
+                display: block;
+                margin-bottom: 8px;
+                color: #333;
+            ">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                style="
+                    width: 100%;
+                    padding: 12px;
+                    margin-bottom: 20px;
+                    box-sizing: border-box;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                "
+            >
+
+            <button
+                type="submit"
+                style="
+                    width: 100%;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 5px;
+                    background: #28a745;
+                    color: white;
+                    font-size: 16px;
+                    cursor: pointer;
+                "
+            >
+                Login
+            </button>
+
+            <p id="message" style="
+                text-align: center;
+                margin-top: 15px;
+                font-size: 14px;
+            "></p>
+
+        </form>
+    </div>
+
+    <script src="js/login.js"></script>
+
+</body>
+</html>
