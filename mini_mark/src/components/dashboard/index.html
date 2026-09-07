@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mini Market Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+
+<div id="loginPage" class="auth-page">
+
+    <div class="auth-box">
+
+        <h1>🛒 Mini Market</h1>
+        <p>Management System</p>
+
+        <form id="loginForm">
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Enter Email"
+                required
+            >
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter Password"
+                required
+            >
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <p class="auth-link">
+            Don't have an account?
+            <span onclick="showRegister()">Register</span>
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================= REGISTER ================= -->
+
+<div id="registerPage" class="auth-page hidden">
+
+    <div class="auth-box">
+
+        <h1>📝 Register</h1>
+        <p>Create your account</p>
+
+        <form id="registerForm">
+
+            <input
+                type="text"
+                id="registerFirstName"
+                placeholder="First Name"
+                required
+            >
+
+            <input
+                type="text"
+                id="registerLastName"
+                placeholder="Last Name"
+                required
+            >
+
+            <input
+                type="email"
+                id="registerEmail"
+                placeholder="Email"
+                required
+            >
+
+            <input
+                type="password"
+                id="registerPassword"
+                placeholder="Password"
+                required
+            >
+
+            <select id="registerRole">
+
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+
+            </select>
+
+            <button type="submit">Register</button>
+
+        </form>
+
+        <p class="auth-link">
+            Already have an account?
+            <span onclick="showLogin()">Login</span>
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MAIN SYSTEM ================= -->
+
+<div id="systemPage" class="hidden">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🛒 Mini Market
+        </div>
+
+        <button onclick="showPage('dashboard')" class="menu-btn">
+            📊 Dashboard
+        </button>
+
+        <button onclick="showPage('products')" class="menu-btn">
+            📦 Products
+        </button>
+
+        <button onclick="showPage('sales')" class="menu-btn">
+            🛍️ POS / Sales
+        </button>
+
+        <button onclick="showPage('customers')" class="menu-btn">
+            👥 Customers
+        </button>
+
+        <button onclick="showPage('inventory')" class="menu-btn">
+            📋 Inventory
+        </button>
+
+        <button onclick="showPage('reports')" class="menu-btn">
+            📈 Reports
+        </button>
+
+        <button onclick="logout()" class="menu-btn logout">
+            🚪 Logout
+        </button>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+                <h2 id="pageTitle">Dashboard</h2>
+            </div>
+
+            <div class="user-info">
+
+                <span id="currentUser"></span>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section id="dashboardPage" class="content-page">
+
+            <h2>Dashboard</h2>
+
+            <div class="cards">
+
+                <div class="card">
+                    <div class="card-icon">📦</div>
+                    <div>
+                        <h3>Total Products</h3>
+                        <strong id="totalProducts">0</strong>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🛍️</div>
+                    <div>
+                        <h3>Total Sales</h3>
+                        <strong id="totalSales">0</strong>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">💰</div>
+                    <div>
+                        <h3>Revenue</h3>
+                        <strong>$<span id="totalRevenue">0.00</span></strong>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">👥</div>
+                    <div>
+                        <h3>Customers</h3>
+                        <strong id="totalCustomers">0</strong>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">⚠️</div>
+                    <div>
+                        <h3>Low Stock</h3>
+                        <strong id="lowStock">0</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <h3>Recent Sales</h3>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Date</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="recentSalesTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PRODUCTS ================= -->
+
+        <section id="productsPage" class="content-page hidden">
+
+            <div class="section-header">
+
+                <h2>Product Management</h2>
+
+            </div>
+
+            <div class="form-container">
+
+                <form id="productForm">
+
+                    <input type="hidden" id="productId">
+
+                    <input
+                        type="text"
+                        id="productName"
+                        placeholder="Product Name"
+                        required
+                    >
+
+                    <input
+                        type="text"
+                        id="productCategory"
+                        placeholder="Category"
+                        required
+                    >
+
+                    <input
+                        type="number"
+                        id="productPrice"
+                        placeholder="Price"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+
+                    <input
+                        type="number"
+                        id="productStock"
+                        placeholder="Stock"
+                        min="0"
+                        required
+                    >
+
+                    <button type="submit" id="productSubmit">
+                        Add Product
+                    </button>
+
+                    <button
+                        type="button"
+                        class="cancel-btn"
+                        onclick="clearProductForm()"
+                    >
+                        Clear
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="productSearch"
+                    placeholder="🔍 Search product..."
+                    oninput="displayProducts()"
+                >
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="productsTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SALES / POS ================= -->
+
+        <section id="salesPage" class="content-page hidden">
+
+            <h2>Point of Sale</h2>
+
+            <div class="pos-container">
+
+                <div class="pos-products">
+
+                    <h3>Products</h3>
+
+                    <input
+                        type="text"
+                        id="posSearch"
+                        placeholder="Search product..."
+                        oninput="displayPOSProducts()"
+                    >
+
+                    <div id="posProductList" class="product-grid"></div>
+
+                </div>
+
+
+                <div class="cart">
+
+                    <h3>Shopping Cart</h3>
+
+                    <div id="cartItems"></div>
+
+                    <hr>
+
+                    <div class="cart-total">
+
+                        <p>
+                            Subtotal:
+                            $<span id="cartSubtotal">0.00</span>
+                        </p>
+
+                        <p>
+                            Discount:
+                            <input
+                                type="number"
+                                id="discount"
+                                value="0"
+                                min="0"
+                                oninput="calculateCart()"
+                            >
+                        </p>
+
+                        <h2>
+                            Total:
+                            $<span id="cartTotal">0.00</span>
+                        </h2>
+
+                    </div>
+
+                    <input
+                        type="text"
+                        id="saleCustomer"
+                        placeholder="Customer Name"
+                    >
+
+                    <input
+                        type="number"
+                        id="payment"
+                        placeholder="Payment"
+                        min="0"
+                        step="0.01"
+                    >
+
+                    <button onclick="completeSale()" class="sale-btn">
+                        Complete Sale
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CUSTOMERS ================= -->
+
+        <section id="customersPage" class="content-page hidden">
+
+            <h2>Customer Management</h2>
+
+            <div class="form-container">
+
+                <form id="customerForm">
+
+                    <input type="hidden" id="customerId">
+
+                    <input
+                        type="text"
+                        id="customerName"
+                        placeholder="Customer Name"
+                        required
+                    >
+
+                    <input
+                        type="tel"
+                        id="customerPhone"
+                        placeholder="Phone Number"
+                        required
+                    >
+
+                    <input
+                        type="email"
+                        id="customerEmail"
+                        placeholder="Email"
+                    >
+
+                    <button type="submit">
+                        Add Customer
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="customerSearch"
+                    placeholder="🔍 Search customer..."
+                    oninput="displayCustomers()"
+                >
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="customersTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= INVENTORY ================= -->
+
+        <section id="inventoryPage" class="content-page hidden">
+
+            <h2>Inventory</h2>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="inventoryTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= REPORTS ================= -->
+
+        <section id="reportsPage" class="content-page hidden">
+
+            <h2>Sales Reports</h2>
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <h3>Total Transactions</h3>
+
+                    <strong id="reportTransactions">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>Total Revenue</h3>
+
+                    <strong>
+                        $<span id="reportRevenue">0.00</span>
+                    </strong>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h3>Total Discount</h3>
+
+                    <strong>
+                        $<span id="reportDiscount">0.00</span>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Subtotal</th>
+                            <th>Discount</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Change</th>
+                            <th>Date</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="reportsTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,404 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Mini Mart - Register</title>
-
-    <style>
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fa;
-            color: #222;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        /* Header */
-
-        .header {
-            background: white;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        .nav {
-            min-height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #16a34a;
-        }
-
-        nav {
-            display: flex;
-            gap: 25px;
-        }
-
-        nav a {
-            color: #333;
-            font-weight: 600;
-        }
-
-        nav a:hover {
-            color: #16a34a;
-        }
-
-
-        /* Register Section */
-
-        .register-section {
-            min-height: calc(100vh - 70px);
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            padding: 40px 20px;
-        }
-
-        .register-box {
-            width: 100%;
-            max-width: 500px;
-
-            background: white;
-
-            padding: 35px;
-
-            border-radius: 15px;
-
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .register-box h1 {
-            text-align: center;
-            color: #16a34a;
-            margin-bottom: 10px;
-        }
-
-        .description {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-
-        /* Form */
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 13px;
-
-            border: 1px solid #ccc;
-            border-radius: 8px;
-
-            font-size: 15px;
-            outline: none;
-        }
-
-        .form-group input:focus {
-            border-color: #16a34a;
-
-            box-shadow:
-                0 0 0 2px rgba(22, 163, 74, 0.1);
-        }
-
-
-        /* Register Button */
-
-        .register-btn {
-            width: 100%;
-
-            padding: 14px;
-
-            border: none;
-            border-radius: 8px;
-
-            background: #16a34a;
-            color: white;
-
-            font-size: 16px;
-            font-weight: bold;
-
-            cursor: pointer;
-
-            transition: 0.3s;
-        }
-
-        .register-btn:hover {
-            background: #15803d;
-        }
-
-
-        /* Message */
-
-        .message {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-
-        /* Login */
-
-        .login-link {
-            text-align: center;
-            margin-top: 20px;
-            color: #666;
-        }
-
-        .login-link a {
-            color: #16a34a;
-            font-weight: bold;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-
-
-        /* Mobile */
-
-        @media (max-width: 600px) {
-
-            .nav {
-                flex-direction: column;
-                padding: 15px 0;
-                gap: 15px;
-            }
-
-            nav {
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .register-box {
-                padding: 25px 20px;
-            }
-
-        }
-
-    </style>
-
 </head>
 
+<body style="margin:0; padding:0; font-family:Arial, sans-serif; background:#f4f6f8;">
 
-<body>
+    <div style="
+        width:380px;
+        margin:50px auto;
+        padding:30px;
+        background:white;
+        border-radius:12px;
+        box-shadow:0 5px 20px rgba(0,0,0,0.15);
+    ">
 
+        <h1 style="
+            text-align:center;
+            color:#198754;
+            margin:0 0 5px 0;
+        ">
+            🛒 Mini Mart
+        </h1>
 
-    <!-- Header -->
+        <p style="
+            text-align:center;
+            color:#777;
+            margin:0 0 25px 0;
+        ">
+            Create Customer Account
+        </p>
 
-    <header class="header">
+        <form id="registerForm">
 
-        <div class="container nav">
+            <label style="
+                display:block;
+                margin-bottom:7px;
+                font-weight:bold;
+                color:#333;
+            ">
+                Full Name
+            </label>
 
-            <a href="index.html" class="logo">
-                🏪 Mini Mart
+            <input
+                id="name"
+                type="text"
+                placeholder="Enter full name"
+                style="
+                    width:100%;
+                    box-sizing:border-box;
+                    padding:12px;
+                    margin-bottom:15px;
+                    border:1px solid #ccc;
+                    border-radius:6px;
+                    outline:none;
+                "
+            >
+
+            <label style="
+                display:block;
+                margin-bottom:7px;
+                font-weight:bold;
+                color:#333;
+            ">
+                Username
+            </label>
+
+            <input
+                id="username"
+                type="text"
+                placeholder="Enter username"
+                style="
+                    width:100%;
+                    box-sizing:border-box;
+                    padding:12px;
+                    margin-bottom:15px;
+                    border:1px solid #ccc;
+                    border-radius:6px;
+                    outline:none;
+                "
+            >
+
+            <label style="
+                display:block;
+                margin-bottom:7px;
+                font-weight:bold;
+                color:#333;
+            ">
+                Email
+            </label>
+
+            <input
+                id="email"
+                type="email"
+                placeholder="Enter email"
+                style="
+                    width:100%;
+                    box-sizing:border-box;
+                    padding:12px;
+                    margin-bottom:15px;
+                    border:1px solid #ccc;
+                    border-radius:6px;
+                    outline:none;
+                "
+            >
+
+            <label style="
+                display:block;
+                margin-bottom:7px;
+                font-weight:bold;
+                color:#333;
+            ">
+                Password
+            </label>
+
+            <input
+                id="password"
+                type="password"
+                placeholder="Enter password"
+                style="
+                    width:100%;
+                    box-sizing:border-box;
+                    padding:12px;
+                    margin-bottom:15px;
+                    border:1px solid #ccc;
+                    border-radius:6px;
+                    outline:none;
+                "
+            >
+
+            <label style="
+                display:block;
+                margin-bottom:7px;
+                font-weight:bold;
+                color:#333;
+            ">
+                Confirm Password
+            </label>
+
+            <input
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirm password"
+                style="
+                    width:100%;
+                    box-sizing:border-box;
+                    padding:12px;
+                    margin-bottom:20px;
+                    border:1px solid #ccc;
+                    border-radius:6px;
+                    outline:none;
+                "
+            >
+
+            <button
+                type="submit"
+                style="
+                    width:100%;
+                    padding:12px;
+                    border:none;
+                    border-radius:6px;
+                    background:#198754;
+                    color:white;
+                    font-size:16px;
+                    font-weight:bold;
+                    cursor:pointer;
+                "
+            >
+                Register
+            </button>
+
+            <p id="registerMessage" style="
+                text-align:center;
+                min-height:20px;
+                margin:15px 0 0 0;
+            "></p>
+
+        </form>
+
+        <p style="
+            text-align:center;
+            color:#666;
+            margin-top:20px;
+        ">
+            Already have an account?
+
+            <a
+                href="login.html"
+                style="
+                    color:#198754;
+                    text-decoration:none;
+                    font-weight:bold;
+                "
+            >
+                Login
             </a>
+        </p>
 
-            <nav>
+    </div>
 
-                <a href="index.html">
-                    Home
-                </a>
-
-                <a href="products.html">
-                    Products
-                </a>
-
-                <a href="stock.html">
-                    Check Stock
-                </a>
-
-                <a href="cart.html">
-                    Cart 🛒
-                </a>
-
-                <a href="login.html">
-                    Login
-                </a>
-
-            </nav>
-
-        </div>
-
-    </header>
-
-
-    <!-- Register -->
-
-    <section class="register-section">
-
-        <div class="register-box">
-
-            <h1>
-                Create Account
-            </h1>
-
-            <p class="description">
-                Register to start shopping at Mini Mart
-            </p>
-
-
-            <form id="registerForm">
-
-
-                <!-- Full Name -->
-
-                <div class="form-group">
-
-                    <label for="name">
-                        Full Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="Enter your full name"
-                        required
-                    >
-
-                </div>
-
-
-                <!-- Email -->
-
-                <div class="form-group">
-
-                    <label for="email">
-                        Email
-                    </label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Enter your email"
-                        required
-                    >
-
-                </div>
-
-
-                <!-- Phone -->
-
-                <div class="form-group">
-
-                    <label for="phone">
-                        Phone Number
-                    </label>
-
-                    <input
-                        type="tel"
-                        id="phone"
-                        placeholder="Enter your phone number"
-                        required
-                    >
-
-                </div>
-
-
-                <!-- Password -->
-
-                <div class="form-group">
-
-                    <label for="password">
-                        Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Create a password"
-                        required
-                    >
-
-                </div>
-
-
-                <!-- Confirm Password -->
-
-                <div class="form-group">
-
-                    <label for="confirmPassword">
-                        Confirm Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        placeholder="Confirm your password"
-                        required
-                    >
-
-                </div>
-
-
-                <!-- Submit -->
-
-                <button
-                    type="submit"
-                    class="register-btn"
-                >
-                    Create Account
-                </button>
-
-            </form>
-
-
-            <p id="message" class="message"></p>
-
-
-            <p class="login-link">
-
-                Already have an account?
-
-                <a href="login.html">
-                    Login
-                </a>
-
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- Separate JavaScript -->
-
-    <script src="js/register.js"></script>
+    <script src="js/auth.js"></script>
 
 </body>
-
 </html>
