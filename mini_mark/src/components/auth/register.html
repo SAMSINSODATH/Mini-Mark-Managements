@@ -3,205 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Mart - Register</title>
+    <title>Document</title>
+    <link rel="stylesheet" href="../auth/register.css">
 </head>
-
-<body style="margin:0; padding:0; font-family:Arial, sans-serif; background:#f4f6f8;">
-
-    <div style="
-        width:380px;
-        margin:50px auto;
-        padding:30px;
-        background:white;
-        border-radius:12px;
-        box-shadow:0 5px 20px rgba(0,0,0,0.15);
-    ">
-
-        <h1 style="
-            text-align:center;
-            color:#198754;
-            margin:0 0 5px 0;
-        ">
-            🛒 Mini Mart
-        </h1>
-
-        <p style="
-            text-align:center;
-            color:#777;
-            margin:0 0 25px 0;
-        ">
-            Create Customer Account
-        </p>
-
-        <form id="registerForm">
-
-            <label style="
-                display:block;
-                margin-bottom:7px;
-                font-weight:bold;
-                color:#333;
-            ">
-                Full Name
-            </label>
-
-            <input
-                id="name"
-                type="text"
-                placeholder="Enter full name"
-                style="
-                    width:100%;
-                    box-sizing:border-box;
-                    padding:12px;
-                    margin-bottom:15px;
-                    border:1px solid #ccc;
-                    border-radius:6px;
-                    outline:none;
-                "
-            >
-
-            <label style="
-                display:block;
-                margin-bottom:7px;
-                font-weight:bold;
-                color:#333;
-            ">
-                Username
-            </label>
-
-            <input
-                id="username"
-                type="text"
-                placeholder="Enter username"
-                style="
-                    width:100%;
-                    box-sizing:border-box;
-                    padding:12px;
-                    margin-bottom:15px;
-                    border:1px solid #ccc;
-                    border-radius:6px;
-                    outline:none;
-                "
-            >
-
-            <label style="
-                display:block;
-                margin-bottom:7px;
-                font-weight:bold;
-                color:#333;
-            ">
-                Email
-            </label>
-
-            <input
-                id="email"
-                type="email"
-                placeholder="Enter email"
-                style="
-                    width:100%;
-                    box-sizing:border-box;
-                    padding:12px;
-                    margin-bottom:15px;
-                    border:1px solid #ccc;
-                    border-radius:6px;
-                    outline:none;
-                "
-            >
-
-            <label style="
-                display:block;
-                margin-bottom:7px;
-                font-weight:bold;
-                color:#333;
-            ">
-                Password
-            </label>
-
-            <input
-                id="password"
-                type="password"
-                placeholder="Enter password"
-                style="
-                    width:100%;
-                    box-sizing:border-box;
-                    padding:12px;
-                    margin-bottom:15px;
-                    border:1px solid #ccc;
-                    border-radius:6px;
-                    outline:none;
-                "
-            >
-
-            <label style="
-                display:block;
-                margin-bottom:7px;
-                font-weight:bold;
-                color:#333;
-            ">
-                Confirm Password
-            </label>
-
-            <input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirm password"
-                style="
-                    width:100%;
-                    box-sizing:border-box;
-                    padding:12px;
-                    margin-bottom:20px;
-                    border:1px solid #ccc;
-                    border-radius:6px;
-                    outline:none;
-                "
-            >
-
-            <button
-                type="submit"
-                style="
-                    width:100%;
-                    padding:12px;
-                    border:none;
-                    border-radius:6px;
-                    background:#198754;
-                    color:white;
-                    font-size:16px;
-                    font-weight:bold;
-                    cursor:pointer;
-                "
-            >
-                Register
-            </button>
-
-            <p id="registerMessage" style="
-                text-align:center;
-                min-height:20px;
-                margin:15px 0 0 0;
-            "></p>
-
-        </form>
-
-        <p style="
-            text-align:center;
-            color:#666;
-            margin-top:20px;
-        ">
-            Already have an account?
-
-            <a
-                href="login.html"
-                style="
-                    color:#198754;
-                    text-decoration:none;
-                    font-weight:bold;
-                "
-            >
-                Login
-            </a>
-        </p>
-
-    </div>
-
-    <script src="js/auth.js"></script>
-
+<body>
+    <form onsubmit="event.preventDefault(); register()">
+        <h1 class="create">Create Account</h1>
+        <p class="join">Join us for exclusive & booking</p>
+        <label for="full_name">Full Name</label>
+        <br>
+        <input type="text" placeholder="Enter Your Full Name" id="name">
+        <br>
+        <label for="email">Email Address</label>
+        <br>
+        <input type="email" placeholder="Enter Your Email" id="email">
+        <br>
+        <label for="password">Passowrd</label>
+        <br>
+        <input type="password" placeholder="Enter Your Password" id="password">
+        <br>
+        <label for="confirm_password">Confirm Passowrd</label>
+        <br>
+        <input type="password" placeholder="Repeat Password" id="confirm_password">
+        <br>
+        <div class="ckeckBox">
+            <input type="checkbox">
+            <p>I agree to t he <span>Trem & Condition</span></p>
+        </div>
+        <br>
+        <button type="submit">REGISTER NOW</button>
+        <div class="login">
+            <p>Alreadyv Have a account?</p>
+            <a href="./login.html">Log in</a>
+        </div>
+    </form>
 </body>
+<script src="./register.js"></script>
 </html>
