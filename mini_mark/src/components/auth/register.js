@@ -1,99 +1,41 @@
-const registerForm = document.getElementById("registerForm");
-const message = document.getElementById("message");
 
-registerForm.addEventListener("submit", function (event) {
+function register(){
+    let name = document.getElementById('name')
+    let email = document.getElementById('email')
+    let password = document.getElementById('password')
+    let cPassword = document.getElementById('confirm_password')
 
-    event.preventDefault();
-
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-
-    const password =
-        document.getElementById("password").value;
-
-    const confirmPassword =
-        document.getElementById("confirmPassword").value;
-
-
-    // Check password
-    if (password !== confirmPassword) {
-
-        message.textContent =
-            "❌ Passwords do not match";
-
-        message.style.color = "red";
-
+    if (password.value !== cPassword.value) {
+        alert("Password does not match!");
         return;
     }
-
-
-    // Get existing users
-    let users = JSON.parse(
-        localStorage.getItem("users") || "[]"
-    );
-
-
-    // Check email
-    const existingUser = users.find(
-        user => user.email === email
-    );
-
-
-    if (existingUser) {
-
-        message.textContent =
-            "❌ Email is already registered";
-
-        message.style.color = "red";
-
-        return;
+    let users = JSON.parse(localStorage.getItem('users') || '[]' )
+    let user = {
+        name : name.value,
+        email : email.value,
+        password : password.value,
     }
+    console.log(user)
+    users.push(user)
+    localStorage.setItem('users',JSON.stringify(users))
+    alert("User Register sucessfully")
+    window.location.href='login.html'
+}
 
-
-    // Create customer
-    const newUser = {
-
-        id: Date.now(),
-
-        name: name,
-
-        email: email,
-
-        phone: phone,
-
-        password: password
-
-    };
-
-
-    // Add customer
-    users.push(newUser);
-
-
-    // Save customer
-    localStorage.setItem(
-        "users",
-        JSON.stringify(users)
-    );
-
-
-    // Show success
-    message.textContent =
-        "✅ Registration successful!";
-
-    message.style.color = "green";
-
-
-    // Clear form
-    registerForm.reset();
-
-
-    // Go to login
-    setTimeout(function () {
-
-        window.location.href = "login.html";
-
-    }, 1000);
-
-});
+function login(){
+    let email = document.getElementById('email')
+    let password = document.getElementById('password')
+    let users = JSON.parse(localStorage.getItem('users') || '[]')
+    let user = users.find((user) => {
+        return user.email == email.value && user.password == password.value
+    })
+    if(!user){
+        alert('You don\'t have permission')
+        return
+    }
+    if(user){
+        localStorage.setItem('auth',JSON.stringify(user))
+        alert('Login successfully')
+    }
+    window.location.href="../dashboard/index.html"
+}
