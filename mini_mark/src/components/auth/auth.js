@@ -40,7 +40,7 @@ function login() {
     }
     if (user){
         localStorage.setItem("auth_login", JSON.stringify(user))
-        window.location.href = "../index.html"
+        window.location.href = "../dashboard/index.html"
     }
     
 }
