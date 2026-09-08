@@ -43,7 +43,7 @@ function saveData() {
 
 
 /* =====================================================
-   PAGE LOAD
+    PAGE LOAD
 ===================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -165,10 +165,7 @@ function register(event) {
 
         return;
     }
-
-
-    /*
-       Create user
+    /*  Create user
     */
 
     let newUser = {
