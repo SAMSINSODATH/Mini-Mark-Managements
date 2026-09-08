@@ -1,11 +1,5 @@
 /* =====================================================
-    MINI MARKET MANAGEMENT SYSTEM
-    HTML + CSS + JAVASCRIPT + LOCAL STORAGE
-===================================================== */
-
-
-/* =====================================================
-    DATABASE
+   DATA
 ===================================================== */
 
 let users = JSON.parse(
@@ -16,24 +10,17 @@ let products = JSON.parse(
     localStorage.getItem("products") || "[]"
 );
 
-let customers = JSON.parse(
-    localStorage.getItem("customers") || "[]"
-);
-
 let sales = JSON.parse(
     localStorage.getItem("sales") || "[]"
 );
 
 let cart = [];
 
-let currentUser =
-    JSON.parse(
-        localStorage.getItem("currentUser") || "null"
-    );
+let currentUser = null;
 
 
 /* =====================================================
-   SAVE DATABASE
+   SAVE DATA
 ===================================================== */
 
 function saveData() {
@@ -49,11 +36,6 @@ function saveData() {
     );
 
     localStorage.setItem(
-        "customers",
-        JSON.stringify(customers)
-    );
-
-    localStorage.setItem(
         "sales",
         JSON.stringify(sales)
     );
@@ -61,79 +43,60 @@ function saveData() {
 
 
 /* =====================================================
-   CREATE DEFAULT ADMIN
+   PAGE LOAD
 ===================================================== */
 
-function createDefaultAdmin() {
+document.addEventListener("DOMContentLoaded", function () {
 
-    if (users.length === 0) {
+    document.getElementById("loginForm")
+        .addEventListener("submit", login);
 
-        users.push({
+    document.getElementById("registerForm")
+        .addEventListener("submit", register);
 
-            id: 1,
+    document.getElementById("productForm")
+        .addEventListener("submit", saveProduct);
 
-            first_name: "Admin",
+    document.getElementById("productSearch")
+        .addEventListener("input", displayProducts);
 
-            last_name: "User",
+    document.getElementById("posSearch")
+        .addEventListener("input", displayPOSProducts);
 
-            email: "admin@gmail.com",
+    document.getElementById("inventorySearch")
+        .addEventListener("input", displayInventory);
 
-            password: "123456",
+    document.getElementById("discount")
+        .addEventListener("input", updateCartTotal);
 
-            role: "admin"
+    document.getElementById("payment")
+        .addEventListener("input", updateCartTotal);
 
-        });
+    document.getElementById("currentDate").innerText =
+        new Date().toLocaleDateString();
 
-        saveData();
+    /*
+       Check saved login
+    */
+
+    let savedUser = JSON.parse(
+        localStorage.getItem("currentUser") || "null"
+    );
+
+    if (savedUser) {
+
+        currentUser = savedUser;
+
+        showSystem();
+
     }
-}
+
+});
 
 
 /* =====================================================
-   PAGE START
+   LOGIN / REGISTER PAGE
 ===================================================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        createDefaultAdmin();
-
-        if (currentUser) {
-
-            showSystem();
-
-        } else {
-
-            showLogin();
-
-        }
-
-        updateDashboard();
-
-    }
-);
-
-
-/* =====================================================
-   LOGIN / REGISTER
-===================================================== */
-
-function showLogin() {
-
-    document
-        .getElementById("loginPage")
-        .classList.remove("hidden");
-
-    document
-        .getElementById("registerPage")
-        .classList.add("hidden");
-
-    document
-        .getElementById("systemPage")
-        .classList.add("hidden");
-}
-
 
 function showRegister() {
 
@@ -146,6 +109,155 @@ function showRegister() {
         .classList.remove("hidden");
 }
 
+
+function showLogin() {
+
+    document
+        .getElementById("registerPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("loginPage")
+        .classList.remove("hidden");
+}
+
+
+/* =====================================================
+   REGISTER
+===================================================== */
+
+function register(event) {
+
+    event.preventDefault();
+
+    let firstName =
+        document.getElementById("firstName").value.trim();
+
+    let lastName =
+        document.getElementById("lastName").value.trim();
+
+    let gender =
+        document.getElementById("gender").value;
+
+    let email =
+        document.getElementById("registerEmail").value
+        .trim()
+        .toLowerCase();
+
+    let password =
+        document.getElementById("registerPassword").value;
+
+    let role =
+        document.getElementById("role").value;
+
+
+    /*
+       Check existing email
+    */
+
+    let existingUser = users.find(
+        user => user.email === email
+    );
+
+    if (existingUser) {
+
+        alert("Email already exists!");
+
+        return;
+    }
+
+
+    /*
+       Create user
+    */
+
+    let newUser = {
+
+        id: Date.now(),
+
+        first_name: firstName,
+
+        last_name: lastName,
+
+        gender: gender,
+
+        email: email,
+
+        password: password,
+
+        role: role
+
+    };
+
+
+    users.push(newUser);
+
+    saveData();
+
+
+    alert("Registration successful!");
+
+
+    document
+        .getElementById("registerForm")
+        .reset();
+
+    showLogin();
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function login(event) {
+
+    event.preventDefault();
+
+    let email =
+        document.getElementById("loginEmail")
+            .value
+            .trim()
+            .toLowerCase();
+
+    let password =
+        document.getElementById("loginPassword")
+            .value;
+
+
+    let user = users.find(
+        user =>
+            user.email === email &&
+            user.password === password
+    );
+
+
+    if (!user) {
+
+        alert("Invalid email or password!");
+
+        return;
+    }
+
+
+    currentUser = user;
+
+
+    localStorage.setItem(
+        "currentUser",
+        JSON.stringify(user)
+    );
+
+
+    showSystem();
+
+}
+
+
+/* =====================================================
+   SHOW SYSTEM
+===================================================== */
 
 function showSystem() {
 
@@ -161,171 +273,22 @@ function showSystem() {
         .getElementById("systemPage")
         .classList.remove("hidden");
 
-    document.getElementById(
-        "currentUser"
-    ).innerText =
+
+    document.getElementById("currentUserName")
+        .innerText =
         currentUser.first_name +
         " " +
-        currentUser.last_name +
-        " (" +
-        currentUser.role +
-        ")";
+        currentUser.last_name;
 
-    showPage("dashboard");
+
+    document.getElementById("currentUserRole")
+        .innerText =
+        currentUser.role;
+
+
+    displayDashboard();
+
 }
-
-
-/* =====================================================
-   REGISTER
-===================================================== */
-
-document
-    .getElementById("registerForm")
-    .addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-            let firstName =
-                document.getElementById(
-                    "registerFirstName"
-                ).value.trim();
-
-            let lastName =
-                document.getElementById(
-                    "registerLastName"
-                ).value.trim();
-
-            let email =
-                document.getElementById(
-                    "registerEmail"
-                ).value.trim();
-
-            let password =
-                document.getElementById(
-                    "registerPassword"
-                ).value;
-
-            let role =
-                document.getElementById(
-                    "registerRole"
-                ).value;
-
-
-            let existingUser =
-                users.find(
-                    user =>
-                        user.email.toLowerCase() ===
-                        email.toLowerCase()
-                );
-
-
-            if (existingUser) {
-
-                alert(
-                    "This email is already registered!"
-                );
-
-                return;
-            }
-
-
-            let newUser = {
-
-                id: Date.now(),
-
-                first_name: firstName,
-
-                last_name: lastName,
-
-                email: email,
-
-                password: password,
-
-                role: role
-
-            };
-
-
-            users.push(newUser);
-
-            saveData();
-
-
-            alert(
-                "Registration successful!"
-            );
-
-
-            document
-                .getElementById("registerForm")
-                .reset();
-
-
-            showLogin();
-
-        }
-    );
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-document
-    .getElementById("loginForm")
-    .addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-
-            let email =
-                document.getElementById(
-                    "loginEmail"
-                ).value.trim();
-
-            let password =
-                document.getElementById(
-                    "loginPassword"
-                ).value;
-
-
-            let user =
-                users.find(
-                    user =>
-                        user.email.toLowerCase() ===
-                            email.toLowerCase()
-                        &&
-                        user.password === password
-                );
-
-
-            if (!user) {
-
-                alert(
-                    "Invalid email or password!"
-                );
-
-                return;
-            }
-
-
-            currentUser = user;
-
-
-            localStorage.setItem(
-                "currentUser",
-                JSON.stringify(currentUser)
-            );
-
-
-            showSystem();
-
-        }
-    );
 
 
 /* =====================================================
@@ -334,23 +297,31 @@ document
 
 function logout() {
 
-    if (
-        confirm(
-            "Are you sure you want to logout?"
-        )
-    ) {
+    if (!confirm("Are you sure you want to logout?")) {
 
-        localStorage.removeItem(
-            "currentUser"
-        );
-
-        currentUser = null;
-
-        cart = [];
-
-        showLogin();
-
+        return;
     }
+
+
+    currentUser = null;
+
+    localStorage.removeItem("currentUser");
+
+    cart = [];
+
+
+    document
+        .getElementById("systemPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("loginPage")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("loginForm")
+        .reset();
+
 }
 
 
@@ -361,27 +332,23 @@ function logout() {
 function showPage(page) {
 
     let pages =
-        document.querySelectorAll(
-            ".content-page"
-        );
-
-    pages.forEach(
-        p =>
-            p.classList.add("hidden")
-    );
+        document.querySelectorAll(".content-page");
 
 
-    let selected =
-        document.getElementById(
-            page + "Page"
-        );
+    pages.forEach(function (section) {
+
+        section.classList.add("hidden");
+
+    });
 
 
-    if (selected) {
+    let selectedPage =
+        document.getElementById(page + "Page");
 
-        selected.classList.remove(
-            "hidden"
-        );
+
+    if (selectedPage) {
+
+        selectedPage.classList.remove("hidden");
 
     }
 
@@ -392,26 +359,67 @@ function showPage(page) {
 
         products: "Product Management",
 
-        sales: "Point of Sale",
-
-        customers: "Customer Management",
+        pos: "POS / Sales",
 
         inventory: "Inventory",
 
-        reports: "Reports"
+        reports: "Sales Reports"
 
     };
 
 
-    document.getElementById(
-        "pageTitle"
-    ).innerText =
-        titles[page] || page;
+    document.getElementById("pageTitle")
+        .innerText =
+        titles[page] || "Dashboard";
 
+
+    /*
+       Active sidebar
+    */
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(function (button) {
+
+            button.classList.remove("active");
+
+        });
+
+
+    let buttons =
+        document.querySelectorAll(".nav-btn");
+
+
+    let index = {
+
+        dashboard: 0,
+
+        products: 1,
+
+        pos: 2,
+
+        inventory: 3,
+
+        reports: 4
+
+    };
+
+
+    if (buttons[index[page]]) {
+
+        buttons[index[page]]
+            .classList.add("active");
+
+    }
+
+
+    /*
+       Refresh page data
+    */
 
     if (page === "dashboard") {
 
-        updateDashboard();
+        displayDashboard();
 
     }
 
@@ -421,17 +429,11 @@ function showPage(page) {
 
     }
 
-    if (page === "sales") {
+    if (page === "pos") {
 
         displayPOSProducts();
 
         displayCart();
-
-    }
-
-    if (page === "customers") {
-
-        displayCustomers();
 
     }
 
@@ -446,6 +448,184 @@ function showPage(page) {
         displayReports();
 
     }
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function displayDashboard() {
+
+    document.getElementById(
+        "dashboardProducts"
+    ).innerText = products.length;
+
+
+    let revenue = sales.reduce(
+        (sum, sale) =>
+            sum + Number(sale.total || 0),
+        0
+    );
+
+
+    document.getElementById(
+        "dashboardRevenue"
+    ).innerText =
+        revenue.toFixed(2);
+
+
+    document.getElementById(
+        "dashboardSales"
+    ).innerText =
+        sales.length;
+
+
+    let lowStock =
+        products.filter(
+            product =>
+                Number(product.stock) <= 5
+        );
+
+
+    document.getElementById(
+        "dashboardLowStock"
+    ).innerText =
+        lowStock.length;
+
+
+    displayRecentSales();
+
+    displayLowStock();
+
+}
+
+
+/* =====================================================
+   RECENT SALES
+===================================================== */
+
+function displayRecentSales() {
+
+    let table =
+        document.getElementById(
+            "recentSalesTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    let recentSales =
+        sales.slice(-5).reverse();
+
+
+    if (recentSales.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="4" class="empty-cart">
+                    No sales yet
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    recentSales.forEach(function (sale) {
+
+        table.innerHTML += `
+
+            <tr>
+
+                <td>${sale.id}</td>
+
+                <td>
+                    ${escapeHTML(
+                        sale.customer ||
+                        "Walk-in Customer"
+                    )}
+                </td>
+
+                <td>
+                    $${Number(
+                        sale.total || 0
+                    ).toFixed(2)}
+                </td>
+
+                <td>
+                    ${sale.date}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+/* =====================================================
+   LOW STOCK
+===================================================== */
+
+function displayLowStock() {
+
+    let container =
+        document.getElementById(
+            "lowStockList"
+        );
+
+
+    container.innerHTML = "";
+
+
+    let lowProducts =
+        products.filter(
+            product =>
+                Number(product.stock) <= 5
+        );
+
+
+    if (lowProducts.length === 0) {
+
+        container.innerHTML = `
+            <p style="
+                color:#278347;
+                padding:20px 0;
+            ">
+                ✓ All products have enough stock.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    lowProducts.forEach(function (product) {
+
+        container.innerHTML += `
+
+            <div class="low-stock-item">
+
+                <strong>
+                    ${escapeHTML(product.name)}
+                </strong>
+
+                <small>
+                    ${product.stock} left
+                </small>
+
+            </div>
+
+        `;
+
+    });
+
 }
 
 
@@ -453,115 +633,147 @@ function showPage(page) {
    PRODUCT MANAGEMENT
 ===================================================== */
 
-document
-    .getElementById("productForm")
-    .addEventListener(
-        "submit",
-        function (event) {
+function saveProduct(event) {
 
-            event.preventDefault();
+    event.preventDefault();
 
 
-            let id =
-                document.getElementById(
-                    "productId"
-                ).value;
+    let id =
+        document.getElementById("productId")
+            .value;
 
 
-            let name =
-                document.getElementById(
-                    "productName"
-                ).value.trim();
-
-            let category =
-                document.getElementById(
-                    "productCategory"
-                ).value.trim();
-
-            let price =
-                Number(
-                    document.getElementById(
-                        "productPrice"
-                    ).value
-                );
-
-            let stock =
-                Number(
-                    document.getElementById(
-                        "productStock"
-                    ).value
-                );
+    let name =
+        document.getElementById("productName")
+            .value.trim();
 
 
-            if (id) {
-
-                let product =
-                    products.find(
-                        p =>
-                            p.id ==
-                            Number(id)
-                    );
+    let price =
+        Number(
+            document.getElementById("productPrice")
+                .value
+        );
 
 
-                if (product) {
-
-                    product.name =
-                        name;
-
-                    product.category =
-                        category;
-
-                    product.price =
-                        price;
-
-                    product.stock =
-                        stock;
-
-                }
+    let stock =
+        Number(
+            document.getElementById("productStock")
+                .value
+        );
 
 
-                alert(
-                    "Product updated successfully!"
-                );
-
-            } else {
-
-                let newProduct = {
-
-                    id: Date.now(),
-
-                    name: name,
-
-                    category: category,
-
-                    price: price,
-
-                    stock: stock
-
-                };
+    let category =
+        document.getElementById("productCategory")
+            .value;
 
 
-                products.push(
-                    newProduct
-                );
+    if (!name) {
+
+        alert("Please enter product name.");
+
+        return;
+    }
 
 
-                alert(
-                    "Product added successfully!"
-                );
-            }
+    if (price < 0 || stock < 0) {
+
+        alert("Price and stock cannot be negative.");
+
+        return;
+    }
 
 
-            saveData();
+    /*
+       UPDATE
+    */
 
-            clearProductForm();
+    if (id) {
 
-            displayProducts();
+        let product =
+            products.find(
+                p => String(p.id) === String(id)
+            );
 
-            updateDashboard();
+
+        if (product) {
+
+            product.name = name;
+
+            product.price = price;
+
+            product.stock = stock;
+
+            product.category = category;
 
         }
-    );
+
+
+        alert("Product updated successfully!");
+
+    }
+
+    /*
+       ADD
+    */
+
+    else {
+
+        let newProduct = {
+
+            id: Date.now(),
+
+            name: name,
+
+            price: price,
+
+            stock: stock,
+
+            category: category
+
+        };
+
+
+        products.push(newProduct);
+
+
+        alert("Product added successfully!");
+
+    }
+
+
+    saveData();
+
+    resetProductForm();
+
+    displayProducts();
+
+    displayDashboard();
+
+}
+
+
+/* =====================================================
+   RESET PRODUCT FORM
+===================================================== */
+
+function resetProductForm() {
+
+    document
+        .getElementById("productForm")
+        .reset();
+
+
+    document
+        .getElementById("productId")
+        .value = "";
+
+
+    document
+        .getElementById("productSubmitBtn")
+        .innerText =
+        "Add Product";
+
+}
 
 
 /* =====================================================
@@ -579,7 +791,11 @@ function displayProducts() {
     let search =
         document.getElementById(
             "productSearch"
-        ).value.toLowerCase();
+        ).value
+        .toLowerCase();
+
+
+    table.innerHTML = "";
 
 
     let filtered =
@@ -588,21 +804,15 @@ function displayProducts() {
                 product.name
                     .toLowerCase()
                     .includes(search)
-                ||
-                product.category
-                    .toLowerCase()
-                    .includes(search)
         );
-
-
-    table.innerHTML = "";
 
 
     if (filtered.length === 0) {
 
         table.innerHTML = `
             <tr>
-                <td colspan="7">
+                <td colspan="7"
+                    style="text-align:center;padding:30px">
                     No products found
                 </td>
             </tr>
@@ -612,78 +822,93 @@ function displayProducts() {
     }
 
 
-    filtered.forEach(
-        product => {
+    filtered.forEach(function (product) {
 
-            let status = "";
-
-            if (product.stock === 0) {
-
-                status = `
-                    <span class="status status-out">
-                        Out of Stock
-                    </span>
-                `;
-
-            } else if (product.stock <= 5) {
-
-                status = `
-                    <span class="status status-low">
-                        Low Stock
-                    </span>
-                `;
-
-            } else {
-
-                status = `
-                    <span class="status status-good">
-                        Available
-                    </span>
-                `;
-
-            }
+        let stock =
+            Number(product.stock);
 
 
-            table.innerHTML += `
+        let status = "";
 
-                <tr>
 
-                    <td>${product.id}</td>
+        if (stock === 0) {
 
-                    <td>${product.name}</td>
-
-                    <td>${product.category}</td>
-
-                    <td>$${product.price.toFixed(2)}</td>
-
-                    <td>${product.stock}</td>
-
-                    <td>${status}</td>
-
-                    <td>
-
-                        <button
-                            class="edit-btn"
-                            onclick="editProduct(${product.id})"
-                        >
-                            Edit
-                        </button>
-
-                        <button
-                            class="delete-btn"
-                            onclick="deleteProduct(${product.id})"
-                        >
-                            Delete
-                        </button>
-
-                    </td>
-
-                </tr>
-
+            status = `
+                <span class="badge badge-out">
+                    Out of Stock
+                </span>
             `;
 
         }
-    );
+        else if (stock <= 5) {
+
+            status = `
+                <span class="badge badge-low">
+                    Low Stock
+                </span>
+            `;
+
+        }
+        else {
+
+            status = `
+                <span class="badge badge-good">
+                    In Stock
+                </span>
+            `;
+
+        }
+
+
+        table.innerHTML += `
+
+            <tr>
+
+                <td>${product.id}</td>
+
+                <td>
+                    ${escapeHTML(product.name)}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        product.category || "Other"
+                    )}
+                </td>
+
+                <td>
+                    $${Number(
+                        product.price
+                    ).toFixed(2)}
+                </td>
+
+                <td>${stock}</td>
+
+                <td>${status}</td>
+
+                <td>
+
+                    <button
+                        class="action-btn edit-btn"
+                        onclick="editProduct(${product.id})"
+                    >
+                        ✏️ Edit
+                    </button>
+
+                    <button
+                        class="action-btn delete-btn"
+                        onclick="deleteProduct(${product.id})"
+                    >
+                        🗑️ Delete
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
 
 }
 
@@ -700,41 +925,40 @@ function editProduct(id) {
         );
 
 
-    if (!product) return;
+    if (!product) {
+
+        return;
+    }
 
 
     document.getElementById(
         "productId"
-    ).value =
-        product.id;
+    ).value = product.id;
 
 
     document.getElementById(
         "productName"
-    ).value =
-        product.name;
+    ).value = product.name;
+
+
+    document.getElementById(
+        "productPrice"
+    ).value = product.price;
+
+
+    document.getElementById(
+        "productStock"
+    ).value = product.stock;
 
 
     document.getElementById(
         "productCategory"
     ).value =
-        product.category;
+        product.category || "Other";
 
 
     document.getElementById(
-        "productPrice"
-    ).value =
-        product.price;
-
-
-    document.getElementById(
-        "productStock"
-    ).value =
-        product.stock;
-
-
-    document.getElementById(
-        "productSubmit"
+        "productSubmitBtn"
     ).innerText =
         "Update Product";
 
@@ -748,38 +972,26 @@ function editProduct(id) {
 
 
 /* =====================================================
-   CLEAR PRODUCT FORM
-===================================================== */
-
-function clearProductForm() {
-
-    document
-        .getElementById("productForm")
-        .reset();
-
-
-    document.getElementById(
-        "productId"
-    ).value = "";
-
-
-    document.getElementById(
-        "productSubmit"
-    ).innerText =
-        "Add Product";
-
-}
-
-
-/* =====================================================
    DELETE PRODUCT
 ===================================================== */
 
 function deleteProduct(id) {
 
+    let product =
+        products.find(
+            p => p.id === id
+        );
+
+
+    if (!product) {
+
+        return;
+    }
+
+
     if (
         !confirm(
-            "Delete this product?"
+            `Delete ${product.name}?`
         )
     ) {
 
@@ -789,8 +1001,7 @@ function deleteProduct(id) {
 
     products =
         products.filter(
-            product =>
-                product.id !== id
+            p => p.id !== id
         );
 
 
@@ -798,7 +1009,11 @@ function deleteProduct(id) {
 
     displayProducts();
 
-    updateDashboard();
+    displayPOSProducts();
+
+    displayInventory();
+
+    displayDashboard();
 
 }
 
@@ -811,62 +1026,88 @@ function displayPOSProducts() {
 
     let container =
         document.getElementById(
-            "posProductList"
+            "posProducts"
         );
 
 
     let search =
         document.getElementById(
             "posSearch"
-        ).value.toLowerCase();
+        ).value
+        .toLowerCase();
+
+
+    container.innerHTML = "";
 
 
     let filtered =
         products.filter(
             product =>
-                product.stock > 0
-                &&
                 product.name
                     .toLowerCase()
                     .includes(search)
         );
 
 
-    container.innerHTML = "";
+    if (filtered.length === 0) {
+
+        container.innerHTML = `
+            <p style="color:#999">
+                No products found.
+            </p>
+        `;
+
+        return;
+    }
 
 
-    filtered.forEach(
-        product => {
+    filtered.forEach(function (product) {
 
-            container.innerHTML += `
+        let stock =
+            Number(product.stock);
 
-                <div
-                    class="product-item"
-                    onclick="addToCart(${product.id})"
-                >
 
-                    <h4>
-                        ${product.name}
-                    </h4>
+        container.innerHTML += `
 
-                    <small>
-                        ${product.category}
-                    </small>
+            <div class="pos-product">
 
-                    <p>
-                        $${product.price.toFixed(2)}
-                    </p>
+                <span class="category">
+                    ${escapeHTML(
+                        product.category || "Other"
+                    )}
+                </span>
 
-                    <small>
-                        Stock: ${product.stock}
-                    </small>
+                <h3>
+                    ${escapeHTML(product.name)}
+                </h3>
 
+                <div class="price">
+                    $${Number(
+                        product.price
+                    ).toFixed(2)}
                 </div>
 
-            `;
+                <div class="stock">
+                    Stock: ${stock}
+                </div>
 
-        }
-    );
+                <button
+                    class="add-cart-btn"
+                    onclick="addToCart(${product.id})"
+                    ${stock <= 0 ? "disabled" : ""}
+                >
+                    ${
+                        stock <= 0
+                        ? "Out of Stock"
+                        : "+ Add to Cart"
+                    }
+                </button>
+
+            </div>
+
+        `;
+
+    });
 
 }
 
@@ -883,41 +1124,56 @@ function addToCart(id) {
         );
 
 
-    if (!product) return;
+    if (!product) {
+
+        return;
+    }
+
+
+    if (Number(product.stock) <= 0) {
+
+        alert("Product is out of stock.");
+
+        return;
+    }
 
 
     let existing =
         cart.find(
-            item =>
-                item.productId === id
+            item => item.id === id
         );
 
 
     if (existing) {
 
         if (
-            existing.quantity <
-            product.stock
+            existing.qty >=
+            Number(product.stock)
         ) {
 
-            existing.quantity++;
-
-        } else {
-
             alert(
-                "Not enough stock!"
+                "You cannot add more than available stock."
             );
 
             return;
         }
 
-    } else {
+
+        existing.qty++;
+
+    }
+
+    else {
 
         cart.push({
 
-            productId: id,
+            id: product.id,
 
-            quantity: 1
+            name: product.name,
+
+            price: Number(product.price),
+
+            qty: 1
 
         });
 
@@ -944,89 +1200,173 @@ function displayCart() {
     container.innerHTML = "";
 
 
+    document.getElementById(
+        "cartCount"
+    ).innerText =
+        cart.reduce(
+            (sum, item) =>
+                sum + item.qty,
+            0
+        );
+
+
     if (cart.length === 0) {
 
-        container.innerHTML =
-            "<p>Cart is empty</p>";
+        container.innerHTML = `
+            <div class="empty-cart">
+                🛒 Your cart is empty
+            </div>
+        `;
 
-        calculateCart();
+        updateCartTotal();
 
         return;
     }
 
 
-    cart.forEach(
-        item => {
+    cart.forEach(function (item) {
 
-            let product =
-                products.find(
-                    p =>
-                        p.id ===
-                        item.productId
-                );
+        container.innerHTML += `
 
+            <div class="cart-item">
 
-            if (!product) return;
+                <div class="cart-item-info">
 
+                    <strong>
+                        ${escapeHTML(item.name)}
+                    </strong>
 
-            let total =
-                product.price *
-                item.quantity;
-
-
-            container.innerHTML += `
-
-                <div class="cart-item">
-
-                    <div>
-
-                        <strong>
-                            ${product.name}
-                        </strong>
-
-                        <br>
-
-                        ${item.quantity}
-                        ×
-                        $${product.price.toFixed(2)}
-
-                    </div>
-
-                    <div>
-
-                        $${total.toFixed(2)}
-
-                        <button
-                            onclick="removeFromCart(${product.id})"
-                        >
-                            ×
-                        </button>
-
-                    </div>
+                    <small>
+                        $${Number(
+                            item.price
+                        ).toFixed(2)}
+                    </small>
 
                 </div>
 
-            `;
 
-        }
-    );
+                <div class="qty-controls">
+
+                    <button
+                        class="qty-btn"
+                        onclick="changeQty(
+                            ${item.id},
+                            -1
+                        )"
+                    >
+                        −
+                    </button>
+
+                    <span>
+                        ${item.qty}
+                    </span>
+
+                    <button
+                        class="qty-btn"
+                        onclick="changeQty(
+                            ${item.id},
+                            1
+                        )"
+                    >
+                        +
+                    </button>
+
+                </div>
 
 
-    calculateCart();
+                <strong>
+                    $${(
+                        item.price *
+                        item.qty
+                    ).toFixed(2)}
+                </strong>
+
+
+                <button
+                    class="remove-cart-btn"
+                    onclick="removeFromCart(${item.id})"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        `;
+
+    });
+
+
+    updateCartTotal();
 
 }
 
 
 /* =====================================================
-   REMOVE CART ITEM
+   CHANGE QUANTITY
+===================================================== */
+
+function changeQty(id, amount) {
+
+    let item =
+        cart.find(
+            item => item.id === id
+        );
+
+
+    let product =
+        products.find(
+            product => product.id === id
+        );
+
+
+    if (!item || !product) {
+
+        return;
+    }
+
+
+    let newQty =
+        item.qty + amount;
+
+
+    if (newQty <= 0) {
+
+        removeFromCart(id);
+
+        return;
+    }
+
+
+    if (
+        newQty >
+        Number(product.stock)
+    ) {
+
+        alert(
+            "Not enough stock available."
+        );
+
+        return;
+    }
+
+
+    item.qty = newQty;
+
+
+    displayCart();
+
+}
+
+
+/* =====================================================
+   REMOVE FROM CART
 ===================================================== */
 
 function removeFromCart(id) {
 
     cart =
         cart.filter(
-            item =>
-                item.productId !== id
+            item => item.id !== id
         );
 
 
@@ -1036,35 +1376,48 @@ function removeFromCart(id) {
 
 
 /* =====================================================
-   CALCULATE CART
+   CLEAR CART
 ===================================================== */
 
-function calculateCart() {
+function clearCart() {
 
-    let subtotal = 0;
+    if (cart.length === 0) {
 
-
-    cart.forEach(
-        item => {
-
-            let product =
-                products.find(
-                    p =>
-                        p.id ===
-                        item.productId
-                );
+        return;
+    }
 
 
-            if (product) {
+    if (
+        !confirm(
+            "Clear all items from cart?"
+        )
+    ) {
 
-                subtotal +=
-                    product.price *
-                    item.quantity;
+        return;
+    }
 
-            }
 
-        }
-    );
+    cart = [];
+
+    displayCart();
+
+}
+
+
+/* =====================================================
+   UPDATE CART TOTAL
+===================================================== */
+
+function updateCartTotal() {
+
+    let subtotal =
+        cart.reduce(
+            (sum, item) =>
+                sum +
+                Number(item.price) *
+                Number(item.qty),
+            0
+        );
 
 
     let discount =
@@ -1075,13 +1428,44 @@ function calculateCart() {
         ) || 0;
 
 
+    if (discount < 0) {
+
+        discount = 0;
+
+    }
+
+
+    if (discount > subtotal) {
+
+        discount = subtotal;
+
+        document.getElementById(
+            "discount"
+        ).value =
+            discount;
+
+    }
+
+
     let total =
         subtotal - discount;
 
 
-    if (total < 0) {
+    let payment =
+        Number(
+            document.getElementById(
+                "payment"
+            ).value
+        ) || 0;
 
-        total = 0;
+
+    let change =
+        payment - total;
+
+
+    if (change < 0) {
+
+        change = 0;
 
     }
 
@@ -1097,6 +1481,27 @@ function calculateCart() {
     ).innerText =
         total.toFixed(2);
 
+
+    document.getElementById(
+        "change"
+    ).innerText =
+        change.toFixed(2);
+
+
+    return {
+
+        subtotal,
+
+        discount,
+
+        total,
+
+        payment,
+
+        change
+
+    };
+
 }
 
 
@@ -1108,71 +1513,19 @@ function completeSale() {
 
     if (cart.length === 0) {
 
-        alert(
-            "Your cart is empty!"
-        );
+        alert("Cart is empty!");
 
         return;
     }
 
 
-    let subtotal = 0;
-
-
-    cart.forEach(
-        item => {
-
-            let product =
-                products.find(
-                    p =>
-                        p.id ===
-                        item.productId
-                );
-
-
-            if (product) {
-
-                subtotal +=
-                    product.price *
-                    item.quantity;
-
-            }
-
-        }
-    );
-
-
-    let discount =
-        Number(
-            document.getElementById(
-                "discount"
-            ).value
-        ) || 0;
-
-
-    let total =
-        subtotal - discount;
-
-
-    if (total < 0) {
-
-        total = 0;
-
-    }
-
-
-    let payment =
-        Number(
-            document.getElementById(
-                "payment"
-            ).value
-        );
+    let totals =
+        updateCartTotal();
 
 
     if (
-        isNaN(payment)
-        ||
-        payment < total
+        totals.payment <
+        totals.total
     ) {
 
         alert(
@@ -1183,43 +1536,82 @@ function completeSale() {
     }
 
 
+    /*
+       Update stock
+    */
+
+    for (let item of cart) {
+
+        let product =
+            products.find(
+                p => p.id === item.id
+            );
+
+
+        if (!product) {
+
+            alert(
+                `Product ${item.name} no longer exists.`
+            );
+
+            return;
+        }
+
+
+        if (
+            Number(product.stock) <
+            Number(item.qty)
+        ) {
+
+            alert(
+                `Not enough stock for ${item.name}.`
+            );
+
+            return;
+        }
+
+    }
+
+
+    /*
+       Reduce stock
+    */
+
+    cart.forEach(function (item) {
+
+        let product =
+            products.find(
+                p => p.id === item.id
+            );
+
+
+        product.stock =
+            Number(product.stock) -
+            Number(item.qty);
+
+    });
+
+
+    /*
+       Customer
+    */
+
     let customer =
         document.getElementById(
-            "saleCustomer"
-        ).value.trim()
-        ||
-        "Walk-in Customer";
+            "customerName"
+        ).value.trim();
 
 
-    let change =
-        payment - total;
+    if (!customer) {
+
+        customer = "Walk-in Customer";
+
+    }
 
 
-    /* REDUCE STOCK */
-
-    cart.forEach(
-        item => {
-
-            let product =
-                products.find(
-                    p =>
-                        p.id ===
-                        item.productId
-                );
-
-
-            if (product) {
-
-                product.stock -=
-                    item.quantity;
-
-            }
-
-        }
-    );
-
-
-    /* CREATE SALE */
+    /*
+       Create sale
+    */
 
     let sale = {
 
@@ -1227,20 +1619,26 @@ function completeSale() {
 
         customer: customer,
 
-        subtotal: subtotal,
+        subtotal: totals.subtotal,
 
-        discount: discount,
+        discount: totals.discount,
 
-        total: total,
+        total: totals.total,
 
-        payment: payment,
+        payment: totals.payment,
 
-        change: change,
+        change: totals.change,
 
-        items: [...cart],
+        items: cart.map(
+            item => ({
+                id: item.id,
+                name: item.name,
+                price: Number(item.price),
+                qty: Number(item.qty)
+            })
+        ),
 
-        date:
-            new Date().toLocaleString()
+        date: new Date().toLocaleString()
 
     };
 
@@ -1248,21 +1646,23 @@ function completeSale() {
     sales.push(sale);
 
 
+    /*
+       Save everything
+    */
+
     saveData();
 
 
-    alert(
-        "Sale completed!\n\n" +
-        "Total: $" +
-        total.toFixed(2) +
-        "\nPayment: $" +
-        payment.toFixed(2) +
-        "\nChange: $" +
-        change.toFixed(2)
-    );
-
+    /*
+       Clear cart
+    */
 
     cart = [];
+
+
+    document.getElementById(
+        "customerName"
+    ).value = "";
 
 
     document.getElementById(
@@ -1275,423 +1675,201 @@ function completeSale() {
     ).value = "";
 
 
-    document.getElementById(
-        "saleCustomer"
-    ).value = "";
-
-
     displayCart();
 
     displayPOSProducts();
 
-    updateDashboard();
+    displayDashboard();
+
+    displayInventory();
+
+
+    /*
+       Success
+    */
+
+    alert(
+        "Sale completed successfully!"
+    );
+
+
+    /*
+       Automatically print invoice
+    */
+
+    printInvoice(sale);
 
 }
 
 
 /* =====================================================
-   CUSTOMER MANAGEMENT
+   PRINT INVOICE
 ===================================================== */
 
-document
-    .getElementById("customerForm")
-    .addEventListener(
-        "submit",
-        function (event) {
+function printInvoice(sale = null) {
 
-            event.preventDefault();
+    /*
+       If no sale was passed,
+       use latest sale.
+    */
 
+    if (!sale) {
 
-            let id =
-                document.getElementById(
-                    "customerId"
-                ).value;
+        if (sales.length === 0) {
 
+            alert(
+                "No invoice available."
+            );
 
-            let name =
-                document.getElementById(
-                    "customerName"
-                ).value.trim();
-
-            let phone =
-                document.getElementById(
-                    "customerPhone"
-                ).value.trim();
-
-            let email =
-                document.getElementById(
-                    "customerEmail"
-                ).value.trim();
-
-
-            if (id) {
-
-                let customer =
-                    customers.find(
-                        c =>
-                            c.id ==
-                            Number(id)
-                    );
-
-
-                if (customer) {
-
-                    customer.name =
-                        name;
-
-                    customer.phone =
-                        phone;
-
-                    customer.email =
-                        email;
-
-                }
-
-            } else {
-
-                customers.push({
-
-                    id: Date.now(),
-
-                    name: name,
-
-                    phone: phone,
-
-                    email: email
-
-                });
-
-            }
-
-
-            saveData();
-
-
-            document
-                .getElementById(
-                    "customerForm"
-                )
-                .reset();
-
-
-            document.getElementById(
-                "customerId"
-            ).value = "";
-
-
-            displayCustomers();
-
-            updateDashboard();
-
+            return;
         }
-    );
 
 
-/* =====================================================
-   DISPLAY CUSTOMERS
-===================================================== */
+        sale =
+            sales[sales.length - 1];
 
-function displayCustomers() {
-
-    let table =
-        document.getElementById(
-            "customersTable"
-        );
-
-
-    let search =
-        document.getElementById(
-            "customerSearch"
-        ).value.toLowerCase();
-
-
-    let filtered =
-        customers.filter(
-            customer =>
-                customer.name
-                    .toLowerCase()
-                    .includes(search)
-                ||
-                customer.phone
-                    .includes(search)
-        );
-
-
-    table.innerHTML = "";
-
-
-    filtered.forEach(
-        customer => {
-
-            table.innerHTML += `
-
-                <tr>
-
-                    <td>
-                        ${customer.id}
-                    </td>
-
-                    <td>
-                        ${customer.name}
-                    </td>
-
-                    <td>
-                        ${customer.phone}
-                    </td>
-
-                    <td>
-                        ${customer.email || "-"}
-                    </td>
-
-                    <td>
-
-                        <button
-                            class="delete-btn"
-                            onclick="deleteCustomer(${customer.id})"
-                        >
-                            Delete
-                        </button>
-
-                    </td>
-
-                </tr>
-
-            `;
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   DELETE CUSTOMER
-===================================================== */
-
-function deleteCustomer(id) {
-
-    if (
-        !confirm(
-            "Delete this customer?"
-        )
-    ) {
-
-        return;
     }
 
 
-    customers =
-        customers.filter(
-            customer =>
-                customer.id !== id
-        );
+    /*
+       Invoice information
+    */
+
+    document.getElementById(
+        "invoiceId"
+    ).innerText =
+        sale.id;
 
 
-    saveData();
-
-    displayCustomers();
-
-    updateDashboard();
-
-}
+    document.getElementById(
+        "invoiceDate"
+    ).innerText =
+        sale.date;
 
 
-/* =====================================================
-   INVENTORY
-===================================================== */
+    document.getElementById(
+        "invoiceCustomer"
+    ).innerText =
+        sale.customer ||
+        "Walk-in Customer";
 
-function displayInventory() {
 
-    let table =
+    /*
+       Invoice items
+    */
+
+    let invoiceItems =
         document.getElementById(
-            "inventoryTable"
+            "invoiceItems"
         );
 
 
-    table.innerHTML = "";
+    invoiceItems.innerHTML = "";
 
 
-    products.forEach(
-        product => {
+    sale.items.forEach(function (item) {
 
-            let status = "";
-
-
-            if (product.stock === 0) {
-
-                status = `
-                    <span class="status status-out">
-                        Out of Stock
-                    </span>
-                `;
-
-            } else if (product.stock <= 5) {
-
-                status = `
-                    <span class="status status-low">
-                        Low Stock
-                    </span>
-                `;
-
-            } else {
-
-                status = `
-                    <span class="status status-good">
-                        Good
-                    </span>
-                `;
-
-            }
+        let qty =
+            Number(item.qty) || 0;
 
 
-            table.innerHTML += `
+        let price =
+            Number(item.price) || 0;
 
-                <tr>
 
-                    <td>
-                        ${product.id}
-                    </td>
+        let total =
+            qty * price;
 
-                    <td>
-                        ${product.name}
-                    </td>
 
-                    <td>
-                        ${product.category}
-                    </td>
+        invoiceItems.innerHTML += `
 
-                    <td>
-                        $${product.price.toFixed(2)}
-                    </td>
+            <tr>
 
-                    <td>
-                        ${product.stock}
-                    </td>
+                <td>
+                    ${escapeHTML(item.name)}
+                </td>
 
-                    <td>
-                        ${status}
-                    </td>
+                <td>
+                    ${qty}
+                </td>
 
-                </tr>
+                <td>
+                    $${price.toFixed(2)}
+                </td>
 
-            `;
+                <td>
+                    $${total.toFixed(2)}
+                </td>
 
-        }
-    );
+            </tr>
+
+        `;
+
+    });
+
+
+    /*
+       Totals
+    */
+
+    document.getElementById(
+        "invoiceSubtotal"
+    ).innerText =
+        Number(
+            sale.subtotal || 0
+        ).toFixed(2);
+
+
+    document.getElementById(
+        "invoiceDiscount"
+    ).innerText =
+        Number(
+            sale.discount || 0
+        ).toFixed(2);
+
+
+    document.getElementById(
+        "invoiceTotal"
+    ).innerText =
+        Number(
+            sale.total || 0
+        ).toFixed(2);
+
+
+    document.getElementById(
+        "invoicePayment"
+    ).innerText =
+        Number(
+            sale.payment || 0
+        ).toFixed(2);
+
+
+    document.getElementById(
+        "invoiceChange"
+    ).innerText =
+        Number(
+            sale.change || 0
+        ).toFixed(2);
+
+
+    /*
+       Print
+    */
+
+    window.print();
 
 }
 
 
 /* =====================================================
-   DASHBOARD
+   PRINT REPORT
 ===================================================== */
 
-function updateDashboard() {
+function printReport() {
 
-    document.getElementById(
-        "totalProducts"
-    ).innerText =
-        products.length;
+    displayReports();
 
-
-    document.getElementById(
-        "totalSales"
-    ).innerText =
-        sales.length;
-
-
-    let revenue =
-        sales.reduce(
-            (
-                total,
-                sale
-            ) =>
-                total +
-                sale.total,
-            0
-        );
-
-
-    document.getElementById(
-        "totalRevenue"
-    ).innerText =
-        revenue.toFixed(2);
-
-
-    document.getElementById(
-        "totalCustomers"
-    ).innerText =
-        customers.length;
-
-
-    let lowStock =
-        products.filter(
-            product =>
-                product.stock <= 5
-        ).length;
-
-
-    document.getElementById(
-        "lowStock"
-    ).innerText =
-        lowStock;
-
-
-    displayRecentSales();
-
-}
-
-
-/* =====================================================
-   RECENT SALES
-===================================================== */
-
-function displayRecentSales() {
-
-    let table =
-        document.getElementById(
-            "recentSalesTable"
-        );
-
-
-    table.innerHTML = "";
-
-
-    let recent =
-        [...sales]
-            .reverse()
-            .slice(0, 5);
-
-
-    recent.forEach(
-        sale => {
-
-            table.innerHTML += `
-
-                <tr>
-
-                    <td>
-                        ${sale.id}
-                    </td>
-
-                    <td>
-                        ${sale.customer}
-                    </td>
-
-                    <td>
-                        $${sale.total.toFixed(2)}
-                    </td>
-
-                    <td>
-                        ${sale.date}
-                    </td>
-
-                </tr>
-
-            `;
-
-        }
-    );
+    window.print();
 
 }
 
@@ -1715,59 +1893,107 @@ function displayReports() {
 
     let discount = 0;
 
-
-    sales.forEach(
-        sale => {
-
-            revenue +=
-                sale.total;
-
-            discount +=
-                sale.discount;
+    let payment = 0;
 
 
-            table.innerHTML += `
+    sales.forEach(function (sale) {
 
-                <tr>
+        revenue +=
+            Number(
+                sale.total || 0
+            );
 
-                    <td>
-                        ${sale.id}
-                    </td>
 
-                    <td>
-                        ${sale.customer}
-                    </td>
+        discount +=
+            Number(
+                sale.discount || 0
+            );
 
-                    <td>
-                        $${sale.subtotal.toFixed(2)}
-                    </td>
 
-                    <td>
-                        $${sale.discount.toFixed(2)}
-                    </td>
+        payment +=
+            Number(
+                sale.payment || 0
+            );
 
-                    <td>
-                        $${sale.total.toFixed(2)}
-                    </td>
 
-                    <td>
-                        $${sale.payment.toFixed(2)}
-                    </td>
+        table.innerHTML += `
 
-                    <td>
-                        $${sale.change.toFixed(2)}
-                    </td>
+            <tr>
 
-                    <td>
-                        ${sale.date}
-                    </td>
+                <td>
+                    ${sale.id}
+                </td>
 
-                </tr>
+                <td>
+                    ${escapeHTML(
+                        sale.customer ||
+                        "Walk-in Customer"
+                    )}
+                </td>
 
-            `;
+                <td>
+                    $${Number(
+                        sale.subtotal || 0
+                    ).toFixed(2)}
+                </td>
 
-        }
-    );
+                <td>
+                    $${Number(
+                        sale.discount || 0
+                    ).toFixed(2)}
+                </td>
+
+                <td>
+                    $${Number(
+                        sale.total || 0
+                    ).toFixed(2)}
+                </td>
+
+                <td>
+                    $${Number(
+                        sale.payment || 0
+                    ).toFixed(2)}
+                </td>
+
+                <td>
+                    $${Number(
+                        sale.change || 0
+                    ).toFixed(2)}
+                </td>
+
+                <td>
+                    ${sale.date}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    if (sales.length === 0) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="8"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                        color:#999;
+                    "
+                >
+                    No sales records found.
+                </td>
+
+            </tr>
+
+        `;
+
+    }
 
 
     document.getElementById(
@@ -1786,5 +2012,240 @@ function displayReports() {
         "reportDiscount"
     ).innerText =
         discount.toFixed(2);
+
+
+    document.getElementById(
+        "reportPayment"
+    ).innerText =
+        payment.toFixed(2);
+
+
+    document.getElementById(
+        "reportGeneratedDate"
+    ).innerText =
+        new Date().toLocaleString();
+
+}
+
+
+/* =====================================================
+   INVENTORY
+===================================================== */
+
+function displayInventory() {
+
+    let table =
+        document.getElementById(
+            "inventoryTable"
+        );
+
+
+    let search =
+        document.getElementById(
+            "inventorySearch"
+        ).value
+        .toLowerCase();
+
+
+    table.innerHTML = "";
+
+
+    let filtered =
+        products.filter(
+            product =>
+                product.name
+                    .toLowerCase()
+                    .includes(search)
+        );
+
+
+    if (filtered.length === 0) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                    "
+                >
+                    No products found.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+    }
+
+
+    filtered.forEach(function (product) {
+
+        let stock =
+            Number(product.stock);
+
+
+        let status;
+
+
+        if (stock === 0) {
+
+            status = `
+                <span class="badge badge-out">
+                    Out of Stock
+                </span>
+            `;
+
+        }
+        else if (stock <= 5) {
+
+            status = `
+                <span class="badge badge-low">
+                    Low Stock
+                </span>
+            `;
+
+        }
+        else {
+
+            status = `
+                <span class="badge badge-good">
+                    In Stock
+                </span>
+            `;
+
+        }
+
+
+        table.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${product.id}
+                </td>
+
+                <td>
+                    ${escapeHTML(product.name)}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        product.category ||
+                        "Other"
+                    )}
+                </td>
+
+                <td>
+                    $${Number(
+                        product.price
+                    ).toFixed(2)}
+                </td>
+
+                <td>
+                    ${stock}
+                </td>
+
+                <td>
+                    ${status}
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =====================================================
+   DEMO DATA
+===================================================== */
+
+/*
+   Add sample products automatically
+   if there are no products.
+*/
+
+if (products.length === 0) {
+
+    products = [
+
+        {
+            id: 1001,
+            name: "Coca Cola",
+            price: 1.50,
+            stock: 30,
+            category: "Drink"
+        },
+
+        {
+            id: 1002,
+            name: "Pepsi",
+            price: 1.40,
+            stock: 25,
+            category: "Drink"
+        },
+
+        {
+            id: 1003,
+            name: "Potato Chips",
+            price: 1.25,
+            stock: 20,
+            category: "Snack"
+        },
+
+        {
+            id: 1004,
+            name: "Instant Noodles",
+            price: 0.80,
+            stock: 50,
+            category: "Food"
+        },
+
+        {
+            id: 1005,
+            name: "Mineral Water",
+            price: 0.75,
+            stock: 40,
+            category: "Drink"
+        },
+
+        {
+            id: 1006,
+            name: "Soap",
+            price: 1.80,
+            stock: 15,
+            category: "Household"
+        }
+
+    ];
+
+
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
 
 }
