@@ -21,8 +21,7 @@ function register() {
 
     users.push(user);
     localStorage.setItem('users', JSON.stringify(users));
-
-    alert("User Registered Successfully!");
+    
     window.location.href = '../auth/login.html';
 }
 function login() {
@@ -36,12 +35,14 @@ function login() {
     });
 
     if (!user) {
-        alert('Invalid credentials');
+      console.log('invalid user');
+      
         return;
     }
-
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    alert('Login Successfully');
+    if (user){
+        localStorage.setItem("auth_login", JSON.stringify(user))
+        window.location.href = "../index.html"
+    }
     // checkRole(user);
 }
 // function checkRole(user){
