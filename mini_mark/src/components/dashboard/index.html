@@ -11,38 +11,54 @@
 
 <body>
 
-<!-- ================= LOGIN ================= -->
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
 <div id="loginPage" class="auth-page">
 
     <div class="auth-box">
 
-        <h1>🛒 Mini Market</h1>
-        <p>Management System</p>
+        <div class="logo">
+            🛒
+        </div>
+
+        <h1>Mini Market</h1>
+        <p class="subtitle">Management System</p>
 
         <form id="loginForm">
 
-            <input
-                type="email"
-                id="loginEmail"
-                placeholder="Enter Email"
-                required
-            >
+            <div class="form-group">
+                <label>Email</label>
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
 
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="Enter Password"
-                required
-            >
+            <div class="form-group">
+                <label>Password</label>
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+            </div>
 
-            <button type="submit">Login</button>
+            <button type="submit" class="primary-btn">
+                Login
+            </button>
 
         </form>
 
         <p class="auth-link">
             Don't have an account?
-            <span onclick="showRegister()">Register</span>
+            <button type="button" onclick="showRegister()">
+                Register
+            </button>
         </p>
 
     </div>
@@ -50,59 +66,138 @@
 </div>
 
 
-<!-- ================= REGISTER ================= -->
+<!-- =====================================================
+    REGISTER
+===================================================== -->
 
 <div id="registerPage" class="auth-page hidden">
 
     <div class="auth-box">
 
-        <h1>📝 Register</h1>
-        <p>Create your account</p>
+        <div class="logo">
+            🛒
+        </div>
+
+        <h1>Create Account</h1>
+        <p class="subtitle">Mini Market System</p>
 
         <form id="registerForm">
 
-            <input
-                type="text"
-                id="registerFirstName"
-                placeholder="First Name"
-                required
-            >
+            <div class="form-row">
 
-            <input
-                type="text"
-                id="registerLastName"
-                placeholder="Last Name"
-                required
-            >
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input
+                        type="text"
+                        id="firstName"
+                        placeholder="First name"
+                        required
+                    >
+                </div>
 
-            <input
-                type="email"
-                id="registerEmail"
-                placeholder="Email"
-                required
-            >
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input
+                        type="text"
+                        id="lastName"
+                        placeholder="Last name"
+                        required
+                    >
+                </div>
 
-            <input
-                type="password"
-                id="registerPassword"
-                placeholder="Password"
-                required
-            >
+            </div>
 
-            <select id="registerRole">
+            <div class="form-group">
 
-                <option value="staff">Staff</option>
-                <option value="admin">Admin</option>
+                <label>Gender</label>
 
-            </select>
+                <select id="gender" required>
 
-            <button type="submit">Register</button>
+                    <option value="">
+                        Select Gender
+                    </option>
+
+                    <option value="Male">
+                        Male
+                    </option>
+
+                    <option value="Female">
+                        Female
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="registerEmail"
+                    placeholder="example@gmail.com"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Enter password"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Role</label>
+
+                <select id="role" required>
+
+                    <option value="">
+                        Select Role
+                    </option>
+
+                    <option value="Admin">
+                        Admin
+                    </option>
+
+                    <option value="Staff">
+                        Staff
+                    </option>
+
+                    <option value="Customer">
+                        Customer
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button type="submit" class="primary-btn">
+                Register
+            </button>
 
         </form>
 
         <p class="auth-link">
+
             Already have an account?
-            <span onclick="showLogin()">Login</span>
+
+            <button
+                type="button"
+                onclick="showLogin()"
+            >
+                Login
+            </button>
+
         </p>
 
     </div>
@@ -110,45 +205,100 @@
 </div>
 
 
-<!-- ================= MAIN SYSTEM ================= -->
+<!-- =====================================================
+     MAIN SYSTEM
+===================================================== -->
 
-<div id="systemPage" class="hidden">
+<div id="systemPage" class="system hidden">
 
     <!-- SIDEBAR -->
 
     <aside class="sidebar">
 
-        <div class="logo">
-            🛒 Mini Market
+        <div class="sidebar-logo">
+
+            <div class="logo-icon">
+                🛒
+            </div>
+
+            <div>
+                <h2>Mini Market</h2>
+                <small>Management</small>
+            </div>
+
         </div>
 
-        <button onclick="showPage('dashboard')" class="menu-btn">
-            📊 Dashboard
-        </button>
 
-        <button onclick="showPage('products')" class="menu-btn">
-            📦 Products
-        </button>
+        <nav>
 
-        <button onclick="showPage('sales')" class="menu-btn">
-            🛍️ POS / Sales
-        </button>
+            <button
+                class="nav-btn active"
+                onclick="showPage('dashboard')"
+            >
+                📊 Dashboard
+            </button>
 
-        <button onclick="showPage('customers')" class="menu-btn">
-            👥 Customers
-        </button>
+            <button
+                class="nav-btn"
+                onclick="showPage('products')"
+            >
+                📦 Products
+            </button>
 
-        <button onclick="showPage('inventory')" class="menu-btn">
-            📋 Inventory
-        </button>
+            <button
+                class="nav-btn"
+                onclick="showPage('pos')"
+            >
+                🛒 POS / Sales
+            </button>
 
-        <button onclick="showPage('reports')" class="menu-btn">
-            📈 Reports
-        </button>
+            <button
+                class="nav-btn"
+                onclick="showPage('inventory')"
+            >
+                📋 Inventory
+            </button>
 
-        <button onclick="logout()" class="menu-btn logout">
-            🚪 Logout
-        </button>
+            <button
+                class="nav-btn"
+                onclick="showPage('reports')"
+            >
+                📈 Reports
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="user-box">
+
+                <div class="user-icon">
+                    👤
+                </div>
+
+                <div>
+
+                    <strong id="currentUserName">
+                        User
+                    </strong>
+
+                    <small id="currentUserRole">
+                        Staff
+                    </small>
+
+                </div>
+
+            </div>
+
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
+                🚪 Logout
+            </button>
+
+        </div>
 
     </aside>
 
@@ -157,277 +307,519 @@
 
     <main class="main-content">
 
-        <!-- TOP BAR -->
+        <!-- HEADER -->
 
-        <header class="topbar">
+        <header class="top-header">
 
             <div>
-                <h2 id="pageTitle">Dashboard</h2>
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+                <p>
+                    Welcome to Mini Market Management System
+                </p>
+
             </div>
 
-            <div class="user-info">
+            <div class="date-box">
 
-                <span id="currentUser"></span>
+                📅
+                <span id="currentDate"></span>
 
             </div>
 
         </header>
 
 
-        <!-- ================= DASHBOARD ================= -->
+        <!-- =================================================
+             DASHBOARD
+        ================================================= -->
 
-        <section id="dashboardPage" class="content-page">
+        <section
+            id="dashboardPage"
+            class="content-page"
+        >
 
-            <h2>Dashboard</h2>
+            <div class="stats-grid">
 
-            <div class="cards">
+                <div class="stat-card">
 
-                <div class="card">
-                    <div class="card-icon">📦</div>
-                    <div>
-                        <h3>Total Products</h3>
-                        <strong id="totalProducts">0</strong>
+                    <div class="stat-icon blue">
+                        📦
                     </div>
+
+                    <div>
+                        <span>Total Products</span>
+                        <h2 id="dashboardProducts">
+                            0
+                        </h2>
+                    </div>
+
                 </div>
 
-                <div class="card">
-                    <div class="card-icon">🛍️</div>
-                    <div>
-                        <h3>Total Sales</h3>
-                        <strong id="totalSales">0</strong>
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+                        💰
                     </div>
+
+                    <div>
+                        <span>Total Revenue</span>
+                        <h2>
+                            $<span id="dashboardRevenue">0.00</span>
+                        </h2>
+                    </div>
+
                 </div>
 
-                <div class="card">
-                    <div class="card-icon">💰</div>
-                    <div>
-                        <h3>Revenue</h3>
-                        <strong>$<span id="totalRevenue">0.00</span></strong>
+
+                <div class="stat-card">
+
+                    <div class="stat-icon orange">
+                        🧾
                     </div>
+
+                    <div>
+                        <span>Total Sales</span>
+                        <h2 id="dashboardSales">
+                            0
+                        </h2>
+                    </div>
+
                 </div>
 
-                <div class="card">
-                    <div class="card-icon">👥</div>
-                    <div>
-                        <h3>Customers</h3>
-                        <strong id="totalCustomers">0</strong>
-                    </div>
-                </div>
 
-                <div class="card">
-                    <div class="card-icon">⚠️</div>
-                    <div>
-                        <h3>Low Stock</h3>
-                        <strong id="lowStock">0</strong>
+                <div class="stat-card">
+
+                    <div class="stat-icon red">
+                        ⚠️
                     </div>
+
+                    <div>
+                        <span>Low Stock</span>
+                        <h2 id="dashboardLowStock">
+                            0
+                        </h2>
+                    </div>
+
                 </div>
 
             </div>
 
 
-            <div class="table-container">
+            <div class="dashboard-grid">
 
-                <h3>Recent Sales</h3>
+                <div class="panel">
 
-                <table>
+                    <div class="panel-header">
 
-                    <thead>
+                        <h2>Recent Sales</h2>
 
-                        <tr>
-                            <th>ID</th>
-                            <th>Customer</th>
-                            <th>Total</th>
-                            <th>Date</th>
-                        </tr>
+                    </div>
 
-                    </thead>
+                    <div class="table-container">
 
-                    <tbody id="recentSalesTable"></tbody>
+                        <table>
 
-                </table>
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer</th>
+                                    <th>Total</th>
+                                    <th>Date</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="recentSalesTable">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>Low Stock Products</h2>
+
+                    </div>
+
+                    <div id="lowStockList">
+                    </div>
+
+                </div>
 
             </div>
 
         </section>
 
 
-        <!-- ================= PRODUCTS ================= -->
+        <!-- =================================================
+             PRODUCTS
+        ================================================= -->
 
-        <section id="productsPage" class="content-page hidden">
+        <section
+            id="productsPage"
+            class="content-page hidden"
+        >
 
-            <div class="section-header">
+            <div class="panel">
 
-                <h2>Product Management</h2>
+                <div class="panel-header">
 
-            </div>
+                    <h2>Product Management</h2>
 
-            <div class="form-container">
+                    <button
+                        class="primary-btn small"
+                        onclick="resetProductForm()"
+                    >
+                        + Add Product
+                    </button>
+
+                </div>
+
 
                 <form id="productForm">
 
-                    <input type="hidden" id="productId">
-
                     <input
-                        type="text"
-                        id="productName"
-                        placeholder="Product Name"
-                        required
+                        type="hidden"
+                        id="productId"
                     >
 
-                    <input
-                        type="text"
-                        id="productCategory"
-                        placeholder="Category"
-                        required
-                    >
+                    <div class="product-form-grid">
 
-                    <input
-                        type="number"
-                        id="productPrice"
-                        placeholder="Price"
-                        min="0"
-                        step="0.01"
-                        required
-                    >
+                        <div class="form-group">
 
-                    <input
-                        type="number"
-                        id="productStock"
-                        placeholder="Stock"
-                        min="0"
-                        required
-                    >
+                            <label>Product Name</label>
 
-                    <button type="submit" id="productSubmit">
-                        Add Product
-                    </button>
+                            <input
+                                type="text"
+                                id="productName"
+                                placeholder="Product name"
+                                required
+                            >
 
-                    <button
-                        type="button"
-                        class="cancel-btn"
-                        onclick="clearProductForm()"
-                    >
-                        Clear
-                    </button>
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Price</label>
+
+                            <input
+                                type="number"
+                                id="productPrice"
+                                placeholder="0.00"
+                                step="0.01"
+                                min="0"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Stock</label>
+
+                            <input
+                                type="number"
+                                id="productStock"
+                                placeholder="0"
+                                min="0"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Category</label>
+
+                            <select id="productCategory">
+
+                                <option value="Food">
+                                    Food
+                                </option>
+
+                                <option value="Drink">
+                                    Drink
+                                </option>
+
+                                <option value="Snack">
+                                    Snack
+                                </option>
+
+                                <option value="Household">
+                                    Household
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="button-group">
+
+                        <button
+                            type="submit"
+                            class="primary-btn"
+                            id="productSubmitBtn"
+                        >
+                            Add Product
+                        </button>
+
+                        <button
+                            type="button"
+                            class="secondary-btn"
+                            onclick="resetProductForm()"
+                        >
+                            Clear
+                        </button>
+
+                    </div>
 
                 </form>
 
             </div>
 
 
-            <div class="search-box">
+            <div class="panel">
 
-                <input
-                    type="text"
-                    id="productSearch"
-                    placeholder="🔍 Search product..."
-                    oninput="displayProducts()"
-                >
+                <div class="panel-header">
 
-            </div>
+                    <h2>Product List</h2>
+
+                    <input
+                        type="text"
+                        id="productSearch"
+                        class="search-input"
+                        placeholder="🔍 Search product..."
+                    >
+
+                </div>
 
 
-            <div class="table-container">
+                <div class="table-container">
 
-                <table>
+                    <table>
 
-                    <thead>
+                        <thead>
 
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
+                            <tr>
 
-                    </thead>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Action</th>
 
-                    <tbody id="productsTable"></tbody>
+                            </tr>
 
-                </table>
+                        </thead>
+
+                        <tbody id="productsTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 
         </section>
 
 
-        <!-- ================= SALES / POS ================= -->
+        <!-- =================================================
+             POS
+        ================================================= -->
 
-        <section id="salesPage" class="content-page hidden">
+        <section
+            id="posPage"
+            class="content-page hidden"
+        >
 
-            <h2>Point of Sale</h2>
+            <div class="pos-grid">
 
-            <div class="pos-container">
+                <!-- PRODUCTS -->
 
-                <div class="pos-products">
+                <div class="panel">
 
-                    <h3>Products</h3>
+                    <div class="panel-header">
 
-                    <input
-                        type="text"
-                        id="posSearch"
-                        placeholder="Search product..."
-                        oninput="displayPOSProducts()"
+                        <h2>Products</h2>
+
+                        <input
+                            type="text"
+                            id="posSearch"
+                            class="search-input"
+                            placeholder="🔍 Search..."
+                        >
+
+                    </div>
+
+                    <div
+                        id="posProducts"
+                        class="pos-products"
                     >
-
-                    <div id="posProductList" class="product-grid"></div>
+                    </div>
 
                 </div>
 
 
-                <div class="cart">
+                <!-- CART -->
 
-                    <h3>Shopping Cart</h3>
+                <div class="panel cart-panel">
 
-                    <div id="cartItems"></div>
+                    <div class="panel-header">
 
-                    <hr>
+                        <h2>
+                            🛒 Shopping Cart
+                        </h2>
 
-                    <div class="cart-total">
+                        <span
+                            id="cartCount"
+                            class="cart-count"
+                        >
+                            0
+                        </span>
 
-                        <p>
-                            Subtotal:
-                            $<span id="cartSubtotal">0.00</span>
-                        </p>
+                    </div>
 
-                        <p>
-                            Discount:
+
+                    <div
+                        id="cartItems"
+                        class="cart-items"
+                    >
+                    </div>
+
+
+                    <div class="checkout">
+
+                        <div class="form-group">
+
+                            <label>Customer</label>
+
+                            <input
+                                type="text"
+                                id="customerName"
+                                placeholder="Walk-in Customer"
+                            >
+
+                        </div>
+
+
+                        <div class="checkout-row">
+
+                            <span>Subtotal</span>
+
+                            <strong>
+                                $<span id="cartSubtotal">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <div class="checkout-row">
+
+                            <span>Discount</span>
+
                             <input
                                 type="number"
                                 id="discount"
                                 value="0"
                                 min="0"
-                                oninput="calculateCart()"
+                                step="0.01"
                             >
-                        </p>
 
-                        <h2>
-                            Total:
-                            $<span id="cartTotal">0.00</span>
-                        </h2>
+                        </div>
+
+
+                        <div class="checkout-row total-row">
+
+                            <span>Total</span>
+
+                            <strong>
+                                $<span id="cartTotal">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Payment</label>
+
+                            <input
+                                type="number"
+                                id="payment"
+                                placeholder="0.00"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+
+                        <div class="checkout-row">
+
+                            <span>Change</span>
+
+                            <strong>
+                                $<span id="change">
+                                    0.00
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                        <button
+                            class="complete-sale-btn"
+                            onclick="completeSale()"
+                        >
+                            💰 Complete Sale
+                        </button>
+
+
+                        <button
+                            class="print-last-btn"
+                            onclick="printInvoice()"
+                        >
+                            🧾 Print Last Invoice
+                        </button>
+
+
+                        <button
+                            class="clear-cart-btn"
+                            onclick="clearCart()"
+                        >
+                            Clear Cart
+                        </button>
 
                     </div>
-
-                    <input
-                        type="text"
-                        id="saleCustomer"
-                        placeholder="Customer Name"
-                    >
-
-                    <input
-                        type="number"
-                        id="payment"
-                        placeholder="Payment"
-                        min="0"
-                        step="0.01"
-                    >
-
-                    <button onclick="completeSale()" class="sale-btn">
-                        Complete Sale
-                    </button>
 
                 </div>
 
@@ -436,127 +828,76 @@
         </section>
 
 
-        <!-- ================= CUSTOMERS ================= -->
+        <!-- =================================================
+             INVENTORY
+        ================================================= -->
 
-        <section id="customersPage" class="content-page hidden">
+        <section
+            id="inventoryPage"
+            class="content-page hidden"
+        >
 
-            <h2>Customer Management</h2>
+            <div class="panel">
 
-            <div class="form-container">
+                <div class="panel-header">
 
-                <form id="customerForm">
-
-                    <input type="hidden" id="customerId">
+                    <h2>Inventory Management</h2>
 
                     <input
                         type="text"
-                        id="customerName"
-                        placeholder="Customer Name"
-                        required
+                        id="inventorySearch"
+                        class="search-input"
+                        placeholder="🔍 Search..."
                     >
 
-                    <input
-                        type="tel"
-                        id="customerPhone"
-                        placeholder="Phone Number"
-                        required
-                    >
-
-                    <input
-                        type="email"
-                        id="customerEmail"
-                        placeholder="Email"
-                    >
-
-                    <button type="submit">
-                        Add Customer
-                    </button>
-
-                </form>
-
-            </div>
+                </div>
 
 
-            <div class="search-box">
+                <div class="table-container">
 
-                <input
-                    type="text"
-                    id="customerSearch"
-                    placeholder="🔍 Search customer..."
-                    oninput="displayCustomers()"
-                >
+                    <table>
 
-            </div>
+                        <thead>
 
+                            <tr>
 
-            <div class="table-container">
+                                <th>ID</th>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
 
-                <table>
+                            </tr>
 
-                    <thead>
+                        </thead>
 
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Action</th>
-                        </tr>
+                        <tbody id="inventoryTable">
+                        </tbody>
 
-                    </thead>
+                    </table>
 
-                    <tbody id="customersTable"></tbody>
-
-                </table>
+                </div>
 
             </div>
 
         </section>
 
 
-        <!-- ================= INVENTORY ================= -->
+        <!-- =================================================
+             REPORTS
+        ================================================= -->
 
-        <section id="inventoryPage" class="content-page hidden">
+        <section
+            id="reportsPage"
+            class="content-page hidden"
+        >
 
-            <h2>Inventory</h2>
+            <div class="report-cards">
 
-            <div class="table-container">
+                <div class="report-card">
 
-                <table>
-
-                    <thead>
-
-                        <tr>
-                            <th>ID</th>
-                            <th>Product</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Status</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="inventoryTable"></tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= REPORTS ================= -->
-
-        <section id="reportsPage" class="content-page hidden">
-
-            <h2>Sales Reports</h2>
-
-            <div class="cards">
-
-                <div class="card">
-
-                    <h3>Total Transactions</h3>
+                    <span>Total Transactions</span>
 
                     <strong id="reportTransactions">
                         0
@@ -565,23 +906,40 @@
                 </div>
 
 
-                <div class="card">
+                <div class="report-card">
 
-                    <h3>Total Revenue</h3>
+                    <span>Total Revenue</span>
 
                     <strong>
-                        $<span id="reportRevenue">0.00</span>
+                        $<span id="reportRevenue">
+                            0.00
+                        </span>
                     </strong>
 
                 </div>
 
 
-                <div class="card">
+                <div class="report-card">
 
-                    <h3>Total Discount</h3>
+                    <span>Total Discount</span>
 
                     <strong>
-                        $<span id="reportDiscount">0.00</span>
+                        $<span id="reportDiscount">
+                            0.00
+                        </span>
+                    </strong>
+
+                </div>
+
+
+                <div class="report-card">
+
+                    <span>Total Payment</span>
+
+                    <strong>
+                        $<span id="reportPayment">
+                            0.00
+                        </span>
                     </strong>
 
                 </div>
@@ -589,28 +947,59 @@
             </div>
 
 
-            <div class="table-container">
+            <div class="panel">
 
-                <table>
+                <div class="panel-header">
 
-                    <thead>
+                    <div>
 
-                        <tr>
-                            <th>ID</th>
-                            <th>Customer</th>
-                            <th>Subtotal</th>
-                            <th>Discount</th>
-                            <th>Total</th>
-                            <th>Payment</th>
-                            <th>Change</th>
-                            <th>Date</th>
-                        </tr>
+                        <h2>Sales Report</h2>
 
-                    </thead>
+                        <p class="report-date">
+                            Generated:
+                            <span id="reportGeneratedDate"></span>
+                        </p>
 
-                    <tbody id="reportsTable"></tbody>
+                    </div>
 
-                </table>
+
+                    <button
+                        class="print-btn"
+                        onclick="printReport()"
+                    >
+                        🖨️ Print Report
+                    </button>
+
+                </div>
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Subtotal</th>
+                                <th>Discount</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Change</th>
+                                <th>Date</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="reportsTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 
@@ -621,6 +1010,109 @@
 </div>
 
 
+<!-- =====================================================
+     PRINT INVOICE
+===================================================== -->
+
+<div id="invoice" class="invoice">
+
+    <div class="invoice-header">
+
+        <h1>MINI MARKET</h1>
+
+        <p>Sales Invoice</p>
+
+        <p>Thank you for shopping with us!</p>
+
+    </div>
+
+
+    <hr>
+
+
+    <div class="invoice-info">
+
+        <p>
+            <strong>Invoice ID:</strong>
+            <span id="invoiceId"></span>
+        </p>
+
+        <p>
+            <strong>Date:</strong>
+            <span id="invoiceDate"></span>
+        </p>
+
+        <p>
+            <strong>Customer:</strong>
+            <span id="invoiceCustomer"></span>
+        </p>
+
+    </div>
+
+
+    <table class="invoice-table">
+
+        <thead>
+
+            <tr>
+
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="invoiceItems">
+        </tbody>
+
+    </table>
+
+
+    <div class="invoice-total">
+
+        <p>
+            <strong>Subtotal:</strong>
+            $<span id="invoiceSubtotal">0.00</span>
+        </p>
+
+        <p>
+            <strong>Discount:</strong>
+            $<span id="invoiceDiscount">0.00</span>
+        </p>
+
+        <p class="invoice-grand-total">
+            <strong>Total:</strong>
+            $<span id="invoiceTotal">0.00</span>
+        </p>
+
+        <p>
+            <strong>Payment:</strong>
+            $<span id="invoicePayment">0.00</span>
+        </p>
+
+        <p>
+            <strong>Change:</strong>
+            $<span id="invoiceChange">0.00</span>
+        </p>
+
+    </div>
+
+
+    <hr>
+
+
+    <div class="invoice-footer">
+
+        <p>Thank you for your purchase!</p>
+
+        <p>Please come again.</p>
+
+    </div>
+
+</div>
 <script src="script.js"></script>
 
 </body>
